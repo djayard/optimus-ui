@@ -1158,7 +1158,12 @@ export class AutoComplete<T = any> extends BaseInput<AutoCompletePassThrough> {
      * the option object itself or the value resolved through `optionValue`.
      */
     private isOptionEqualToValue(option: any, value: any): boolean {
-        return equals(value, option, this.equalityKey()) || (this.isResolvedOptionValue(value) && equals(this.getOptionValue(option), value));
+        const dataKey = this.dataKey;
+        if (dataKey) {
+            return equals(option, value, dataKey) || equals(option[dataKey], value);
+        } else {
+            return equals(option, value) || equals(this.getOptionValue(option), value);
+        }
     }
 
     isOptionMatched(option, value) {
@@ -1171,10 +1176,6 @@ export class AutoComplete<T = any> extends BaseInput<AutoCompletePassThrough> {
 
     isDropdownClicked(event) {
         return this.dropdownButton?.nativeElement ? event.target === this.dropdownButton.nativeElement || this.dropdownButton.nativeElement.contains(event.target) : false;
-    }
-
-    equalityKey() {
-        return this.optionValue ? undefined : this.dataKey;
     }
 
     onContainerClick(event) {
