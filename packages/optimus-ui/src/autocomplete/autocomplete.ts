@@ -6,8 +6,8 @@ import {
     computed,
     ContentChild,
     ContentChildren,
-    EmbeddedViewRef,
     ElementRef,
+    EmbeddedViewRef,
     EventEmitter,
     forwardRef,
     HostListener,
@@ -1154,8 +1154,9 @@ export class AutoComplete<T = any> extends BaseInput<AutoCompletePassThrough> {
     }
 
     /**
-     * Whether an option corresponds to a model value, regardless of whether the model holds
-     * the option object itself or the value resolved through `optionValue`.
+     * Whether an option corresponds to a model value.
+     * If this.dataKey defined, true if and only if: option[dataKey] deep equals value[dataKey] or option[dataKey] deep equals value.
+     * Otherwise, true if and only if: option deep equals value or this.getOptionValue(option) deep equals value.
      */
     private isOptionEqualToValue(option: any, value: any): boolean {
         const dataKey = this.dataKey;
